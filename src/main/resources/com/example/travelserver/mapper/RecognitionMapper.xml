@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.travelserver.mapper.RecognitionMapper">
+  <resultMap id="BaseResultMap" type="com.example.travelserver.model.Recognition">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    <result column="landmark_name" jdbcType="VARCHAR" property="landmarkName" />
+    <result column="landmark_describe" jdbcType="VARCHAR" property="landmarkDescribe" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, photo, landmark_name, landmark_describe, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from recognition
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!--根据userId查找所有地标识别-->
+  <select id="queryRecognitionByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List"/>
+    from recognition
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from recognition
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.travelserver.model.Recognition">
+    insert into recognition (id, user_id, photo, 
+      landmark_name, landmark_describe, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, 
+      #{landmarkName,jdbcType=VARCHAR}, #{landmarkDescribe,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.travelserver.model.Recognition">
+    insert into recognition
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="photo != null">
+        photo,
+      </if>
+      <if test="landmarkName != null">
+        landmark_name,
+      </if>
+      <if test="landmarkDescribe != null">
+        landmark_describe,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="landmarkName != null">
+        #{landmarkName,jdbcType=VARCHAR},
+      </if>
+      <if test="landmarkDescribe != null">
+        #{landmarkDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.travelserver.model.Recognition">
+    update recognition
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="landmarkName != null">
+        landmark_name = #{landmarkName,jdbcType=VARCHAR},
+      </if>
+      <if test="landmarkDescribe != null">
+        landmark_describe = #{landmarkDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.travelserver.model.Recognition">
+    update recognition
+    set user_id = #{userId,jdbcType=VARCHAR},
+      photo = #{photo,jdbcType=VARCHAR},
+      landmark_name = #{landmarkName,jdbcType=VARCHAR},
+      landmark_describe = #{landmarkDescribe,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

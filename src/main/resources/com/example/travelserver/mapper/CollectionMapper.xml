@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.travelserver.mapper.CollectionMapper">
+  <resultMap id="BaseResultMap" type="com.example.travelserver.model.Collection">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="guideline_id" jdbcType="BIGINT" property="guidelineId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, guideline_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from collection
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <!--根据userId和guidelineId查询是否有-->
+  <select id="selectByUserAndGuidelineId" parameterType="com.example.travelserver.model.Collection" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from collection
+    where user_id = #{userId,jdbcType=VARCHAR} and guideline_id = #{guidelineId,jdbcType=BIGINT}
+  </select>
+  <!--根据userId查询所有收藏-->
+  <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from collection
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from collection
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <!--根据guidelineId删除-->
+  <delete id="deleteByGuidelineId" parameterType="java.lang.Long">
+    delete from collection
+    where guideline_id = #{guidelineId,jdbcType=BIGINT}
+  </delete>
+  <!--删除-->
+  <delete id="deleteItem" parameterType="com.example.travelserver.model.Collection">
+    delete from collection
+    where user_id = #{userId,jdbcType=VARCHAR} and guideline_id = #{guidelineId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.travelserver.model.Collection">
+    insert into collection (id, user_id, guideline_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{guidelineId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.travelserver.model.Collection">
+    insert into collection
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="guidelineId != null">
+        guideline_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="guidelineId != null">
+        #{guidelineId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.travelserver.model.Collection">
+    update collection
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="guidelineId != null">
+        guideline_id = #{guidelineId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.travelserver.model.Collection">
+    update collection
+    set user_id = #{userId,jdbcType=VARCHAR},
+      guideline_id = #{guidelineId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
